@@ -1,6 +1,7 @@
 package com.example.proyectovisual.controller;
 
 import com.example.proyectovisual.database.DBConnection;
+import com.example.proyectovisual.database.AppSession;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -28,11 +29,12 @@ public class MainController {
                     userField.getText(),
                     passwordField.getText()
             );
+            AppSession.setConnection(conn); // Guardamos la conexion
 
-            messageLabel.setText("✅ Conectado correctamente");
+            messageLabel.setText("Conectado correctamente");
 
         } catch (Exception e) {
-            messageLabel.setText("❌ Error: " + e.getMessage());
+            messageLabel.setText("Error: " + e.getMessage());
         }
     }
 }
