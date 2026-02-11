@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.proyectovisual.controller.MainController">
+
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Conexión a Base de Datos"/>
+
+    <TextField fx:id="hostField" promptText="Host (localhost)"/>
+    <TextField fx:id="portField" promptText="Puerto (5432)"/>
+    <TextField fx:id="dbField" promptText="Nombre de Base de Datos"/>
+    <TextField fx:id="userField" promptText="Usuario"/>
+    <PasswordField fx:id="passwordField" promptText="Contraseña"/>
+
+    <Button text="Conectar" onAction="#handleConnect"/>
+
+    <Label fx:id="messageLabel"/>
+
+</VBox>
