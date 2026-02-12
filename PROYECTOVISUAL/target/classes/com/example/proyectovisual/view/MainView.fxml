@@ -28,13 +28,12 @@
         <TableView fx:id="dynamicTable"/>
     </center>
 
-    <!-- Sección inferior: CRUD dinámico -->
+    <!--Sección inferior: CRUD dinámico -->
     <bottom>
         <VBox fx:id="crudBox" spacing="10">
             <padding>
                 <Insets top="10" right="10" bottom="10" left="10"/>
             </padding>
-            <!-- Los TextFields y botones CRUD se generan dinámicamente en MainController -->
         </VBox>
     </bottom>
 </BorderPane>
