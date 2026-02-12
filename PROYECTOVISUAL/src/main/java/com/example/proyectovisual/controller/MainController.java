@@ -1,22 +1,14 @@
 package com.example.proyectovisual.controller;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.TextField;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
-
 import com.example.proyectovisual.dao.GenericDAO;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.*;
 
 public class MainController {
@@ -29,12 +21,13 @@ public class MainController {
     @FXML private TextField tableNameField;
 
     @FXML private TableView<ObservableList<String>> dynamicTable;
-    @FXML private VBox crudBox; // contenedor donde se generan los TextFields
+    @FXML private VBox crudBox;
 
     private Connection conn;
     private GenericDAO dao;
     private List<TextField> crudFields = new ArrayList<>();
     private List<String> columnNames = new ArrayList<>();
+    private Map<String, Integer> columnTypes = new HashMap<>();
 
     @FXML
     private void handleConnectAndLoad() {
@@ -42,31 +35,29 @@ public class MainController {
         String user = this.userField.getText();
         String password = this.passwordField.getText();
         String tableName = tableNameField.getText();
-
         try {
             conn = DriverManager.getConnection(url, user, password);
             dao = new GenericDAO(conn, tableName);
             columnNames = dao.getColumnNames();
+            columnTypes = dao.getColumnTypes();
             buildCrudFields();
             loadTable();
             showInfo("Conexión exitosa", "Se cargó la tabla: " + tableName);
         } catch (SQLException e) {
             e.printStackTrace();
-            showAlert("Error de conexión", "No se pudo conectar:\n" + e.getMessage());
+            showAlert("Error de conexión", e.getMessage());
         }
     }
 
     private void buildCrudFields() {
         crudBox.getChildren().clear();
         crudFields.clear();
-        // saltamos la primera columna si es ID
         for (int i = 1; i < columnNames.size(); i++) {
             TextField tf = new TextField();
             tf.setPromptText(columnNames.get(i));
             crudBox.getChildren().add(tf);
             crudFields.add(tf);
         }
-        // botones CRUD
         Button addBtn = new Button("Agregar");
         addBtn.setOnAction(e -> handleAdd());
         Button updateBtn = new Button("Actualizar");
@@ -79,13 +70,11 @@ public class MainController {
     private void loadTable() {
         try {
             List<Map<String, Object>> rows = dao.findAll();
-
             if (rows.isEmpty()) {
                 dynamicTable.getColumns().clear();
                 dynamicTable.setItems(FXCollections.observableArrayList());
                 return;
             }
-
             dynamicTable.getColumns().clear();
             Map<String, Object> firstRow = rows.get(0);
             int colIndex = 0;
@@ -96,7 +85,6 @@ public class MainController {
                 dynamicTable.getColumns().add(col);
                 colIndex++;
             }
-
             ObservableList<ObservableList<String>> data = FXCollections.observableArrayList();
             for (Map<String, Object> row : rows) {
                 ObservableList<String> rowData = FXCollections.observableArrayList();
@@ -106,10 +94,9 @@ public class MainController {
                 data.add(rowData);
             }
             dynamicTable.setItems(data);
-
         } catch (SQLException e) {
             e.printStackTrace();
-            showAlert("Error", "No se pudo cargar la tabla:\n" + e.getMessage());
+            showAlert("Error", e.getMessage());
         }
     }
 
@@ -126,9 +113,9 @@ public class MainController {
             dao.insert(values);
             loadTable();
             limpiarCrud();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Error", "No se pudo insertar:\n" + e.getMessage());
+            showAlert("Error", e.getMessage());
         }
     }
 
@@ -151,9 +138,9 @@ public class MainController {
             dao.update(id, values);
             loadTable();
             limpiarCrud();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Error", "No se pudo actualizar:\n" + e.getMessage());
+            showAlert("Error", e.getMessage());
         }
     }
 
@@ -165,22 +152,42 @@ public class MainController {
             return;
         }
         try {
-            int id = Integer.parseInt(selectedRow.get(0)); // asumimos que la primera columna es ID
+            int id = Integer.parseInt(selectedRow.get(0));
             dao.delete(id);
             loadTable();
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            showAlert("Error", "No se pudo eliminar:\n" + e.getMessage());
+            showAlert("Error", e.getMessage());
         }
     }
 
     private Object convertValue(String colName, String inputValue) {
-        if (colName.equalsIgnoreCase("duracion")) {
-            return Integer.parseInt(inputValue);
-        } else if (colName.equalsIgnoreCase("precio")) {
-            return Double.parseDouble(inputValue);
+        if (inputValue == null || inputValue.isEmpty()) return null;
+        int sqlType = columnTypes.getOrDefault(colName, Types.VARCHAR);
+        try {
+            switch (sqlType) {
+                case Types.INTEGER:
+                case Types.SMALLINT:
+                case Types.TINYINT:
+                    return Integer.parseInt(inputValue);
+                case Types.BIGINT:
+                    return Long.parseLong(inputValue);
+                case Types.NUMERIC:
+                case Types.DECIMAL:
+                case Types.DOUBLE:
+                case Types.FLOAT:
+                    return Double.parseDouble(inputValue);
+                case Types.DATE:
+                    return java.sql.Date.valueOf(inputValue); // yyyy-MM-dd
+                case Types.TIMESTAMP:
+                    return java.sql.Timestamp.valueOf(inputValue); // yyyy-MM-dd HH:mm:ss
+                default:
+                    return inputValue;
+            }
+        } catch (Exception e) {
+            // Si falla la conversión, lo dejamos como String
+            return inputValue;
         }
-        return inputValue; // por defecto String
     }
 
     private void limpiarCrud() {
