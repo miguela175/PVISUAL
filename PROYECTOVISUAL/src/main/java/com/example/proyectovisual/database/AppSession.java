@@ -1,5 +1,5 @@
 package com.example.proyectovisual.database;
-// Guardar la conexion a la base de datos
+
 
 import java.sql.Connection;
 

@@ -1,4 +1,7 @@
+module-info.class
+com\example\proyectovisual\dao\GenericDAO.class
 com\example\proyectovisual\Main.class
 com\example\proyectovisual\controller\MainController.class
-module-info.class
+com\example\proyectovisual\database\AppSession.class
 com\example\proyectovisual\database\DBConnection.class
+com\example\proyectovisual\model\Producto.class

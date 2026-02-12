@@ -1,5 +1,7 @@
-C:\Users\migue\IdeaProjects\PROYECTOVISUAL\src\main\java\com\example\proyectovisual\controller\MainController.java
-C:\Users\migue\IdeaProjects\PROYECTOVISUAL\src\main\java\com\example\proyectovisual\database\DBConnection.java
-C:\Users\migue\IdeaProjects\PROYECTOVISUAL\src\main\java\com\example\proyectovisual\Main.java
-C:\Users\migue\IdeaProjects\PROYECTOVISUAL\src\main\java\com\example\proyectovisual\model\GenericDAO.java
-C:\Users\migue\IdeaProjects\PROYECTOVISUAL\src\main\java\module-info.java
+C:\Users\migue\OneDrive\Desktop\PVISUAL\PROYECTOVISUAL\src\main\java\com\example\proyectovisual\controller\MainController.java
+C:\Users\migue\OneDrive\Desktop\PVISUAL\PROYECTOVISUAL\src\main\java\com\example\proyectovisual\dao\GenericDAO.java
+C:\Users\migue\OneDrive\Desktop\PVISUAL\PROYECTOVISUAL\src\main\java\com\example\proyectovisual\database\AppSession.java
+C:\Users\migue\OneDrive\Desktop\PVISUAL\PROYECTOVISUAL\src\main\java\com\example\proyectovisual\database\DBConnection.java
+C:\Users\migue\OneDrive\Desktop\PVISUAL\PROYECTOVISUAL\src\main\java\com\example\proyectovisual\Main.java
+C:\Users\migue\OneDrive\Desktop\PVISUAL\PROYECTOVISUAL\src\main\java\com\example\proyectovisual\model\Producto.java
+C:\Users\migue\OneDrive\Desktop\PVISUAL\PROYECTOVISUAL\src\main\java\module-info.java

@@ -1,26 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
-<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<VBox spacing="10" alignment="CENTER" xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.example.proyectovisual.controller.MainController">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.proyectovisual.controller.MainController">
 
-    <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
-    </padding>
+    <!-- Sección superior: conexión a la base -->
+    <top>
+        <VBox spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <TextField fx:id="hostField" promptText="Host (ej: localhost)"/>
+            <TextField fx:id="portField" promptText="Puerto (ej: 5432)"/>
+            <TextField fx:id="dbNameField" promptText="Base de datos"/>
+            <TextField fx:id="userField" promptText="Usuario"/>
+            <PasswordField fx:id="passwordField" promptText="Contraseña"/>
+            <TextField fx:id="tableNameField" promptText="Nombre de la tabla"/>
+            <Button text="Conectar y cargar tabla" onAction="#handleConnectAndLoad"/>
+        </VBox>
+    </top>
 
-    <Label text="Conexión a Base de Datos"/>
+    <!-- Sección central: tabla dinámica -->
+    <center>
+        <TableView fx:id="dynamicTable"/>
+    </center>
 
-    <TextField fx:id="hostField" promptText="Host (localhost)"/>
-    <TextField fx:id="portField" promptText="Puerto (5432)"/>
-    <TextField fx:id="dbField" promptText="Nombre de Base de Datos"/>
-    <TextField fx:id="userField" promptText="Usuario"/>
-    <PasswordField fx:id="passwordField" promptText="Contraseña"/>
-
-    <Button text="Conectar" onAction="#handleConnect"/>
-
-    <Label fx:id="messageLabel"/>
-
-</VBox>
+    <!-- Sección inferior: CRUD dinámico -->
+    <bottom>
+        <VBox fx:id="crudBox" spacing="10">
+            <padding>
+                <Insets top="10" right="10" bottom="10" left="10"/>
+            </padding>
+            <!-- Los TextFields y botones CRUD se generan dinámicamente en MainController -->
+        </VBox>
+    </bottom>
+</BorderPane>

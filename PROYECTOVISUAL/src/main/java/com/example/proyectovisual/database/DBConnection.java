@@ -1,5 +1,4 @@
 package com.example.proyectovisual.database;
-// Conectarnos a la base de datos
 
 import java.sql.Connection;
 import java.sql.DriverManager;
